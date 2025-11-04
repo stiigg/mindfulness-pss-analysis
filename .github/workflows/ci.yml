@@ -1,0 +1,18 @@
+name: R checks + report
+
+on: [push, pull_request]
+
+jobs:
+  r-ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-r@v2
+      - name: Install deps
+        run: Rscript R/install_packages.R
+      - name: Unit tests
+        run: Rscript -e 'if (dir.exists("tests/testthat")) testthat::test_dir("tests/testthat")'
+      - name: Demo data & render report
+        run: |
+          Rscript -e 'if (!file.exists("data/example_mindfulness.xlsx")) source("demo_run.R") else source("R/analysis.R")'
+          Rscript -e 'if (requireNamespace("rmarkdown", quietly=TRUE)) rmarkdown::render("reports/executive_summary.Rmd")'
