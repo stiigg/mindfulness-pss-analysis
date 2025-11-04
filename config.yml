@@ -31,3 +31,24 @@ mcid_sd: 0.5
 
 # Output root directory
 outdir_root: "outputs"
+
+runtime:
+  seed: 20251104
+
+analysis:
+  alpha: 0.05
+  perm_iters: 5000
+  do_tost: true
+  mcid_frac_sd: 0.5   # or set mcid_abs: 3.0
+
+dose:
+  minutes_col: "minutes_total"
+
+dei:
+  groups: ["gender","age_band","department"]
+  gap_threshold: 0.2
+
+flags:
+  render_report: true
+  save_png: true
+  run_tests: false

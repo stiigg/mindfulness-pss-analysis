@@ -1,0 +1,61 @@
+---
+title: "Patient Experience / Mindfulness Impact — Executive Summary"
+output: html_document
+params:
+  run_dir: !r tail(list.dirs("outputs", recursive = FALSE, full.names = TRUE), 1)
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(readr); library(dplyr); library(gt)
+run <- params$run_dir
+m <- read_csv(file.path(run,"exec_metrics.csv"), show_col_types = FALSE)
+ass <- suppressWarnings(try(read_csv(file.path(run,"assumption_tests.csv")), silent=TRUE))
+warns <- tryCatch(readLines(file.path(run,"WARNINGS.txt")), error=function(e) character(0))
+source("R/report_utils.R")
+```
+
+## Headline Verdict
+
+```{r}
+cfg <- tryCatch(yaml::read_yaml("report_config.yml"), error=function(e) list())
+`%||%` <- function(x, y) if (is.null(x) || length(x) == 0) y else x
+th <- cfg$thresholds %||% list(dz_green=0.5, dz_amber=0.3, p_alpha=0.05, tost_alpha=0.05)
+
+dz <- m$dz[1]; p <- m$p[1]; eq <- m$tost[1]
+status <- if (!is.na(eq) && eq==TRUE) "GREEN" else if (!is.na(dz) && dz>=th$dz_green && p < th$p_alpha) "GREEN"
+else if (!is.na(dz) && dz>=th$dz_amber && p < th$p_alpha) "AMBER" else "RED"
+cat(sprintf("**STATUS: %s**  (dz=%.2f, p=%.3f, equivalence=%s)\n", status, dz, p, ifelse(isTRUE(eq),"yes","no")))
+rag_tile(status, file.path(run, "status_tile.png"))
+```
+
+* **Green**: practical & statistical improvement; or non-inferiority/equivalence met against MCID.
+* **Amber**: statistical improvement with modest effect; scrutinize adherence & subgroups.
+* **Red**: no meaningful improvement; address workload/culture confounds, not just interventions.
+
+## Key Metrics
+
+```{r}
+m |> gt()
+```
+
+## Figures
+
+```{r fig-rain, out.width="90%"}
+knitr::include_graphics(file.path(run, "raincloud_deltaPSS.png"))
+```
+
+```{r fig-dose, out.width="90%"}
+knitr::include_graphics(file.path(run, "dose_spline.png"))
+```
+
+## Assumptions & Robustness
+
+```{r, results='asis'}
+if (inherits(ass, "data.frame")) print(gt(ass))
+if (length(warns)) { cat("### Warnings\n"); cat(paste0("- ", warns, collapse = "\n")) }
+```
+
+## Adversarial Review Checklist
+
+Rendered from `adversarial_checklist.md` (below).

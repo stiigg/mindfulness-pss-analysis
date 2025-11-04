@@ -3,7 +3,8 @@ need <- c(
   "tidyverse","readxl","janitor","lubridate","broom","broom.mixed","stringr",
   "skimr","naniar","effectsize","parameters","performance","see","patchwork",
   "mice","lme4","lmerTest","splines","ggeffects","marginaleffects","TOSTER",
-  "ggdist","cowplot","scales","modelsummary","yaml"
+  "ggdist","cowplot","scales","modelsummary","yaml","boot","gt","writexl",
+  "rmarkdown","testthat"
 )
 inst <- setdiff(need, rownames(installed.packages()))
 if(length(inst)) install.packages(inst, dependencies = TRUE)

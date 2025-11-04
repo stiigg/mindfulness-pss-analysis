@@ -1,0 +1,5 @@
+thresholds:
+  dz_green: 0.50
+  dz_amber: 0.30
+  p_alpha: 0.05
+  tost_alpha: 0.05
