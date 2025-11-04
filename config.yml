@@ -1,0 +1,33 @@
+# Configuration for the analysis — edit as needed
+input_file: "data/mindfulness_survey.xlsx"
+sheet_pre: "pre"
+sheet_post: "post"
+
+# Identifier and optional timestamp
+id_col: "participant_id"
+time_col: null   # e.g., "submitted_at" if multiple rows per person exist
+
+# PSS items (exact column names in your file)
+pss_items_pre:  ["pss1_pre","pss2_pre","pss3_pre","pss4_pre","pss5_pre","pss6_pre","pss7_pre","pss8_pre","pss9_pre","pss10_pre"]
+pss_items_post: ["pss1_post","pss2_post","pss3_post","pss4_post","pss5_post","pss6_post","pss7_post","pss8_post","pss9_post","pss10_post"]
+
+# Reverse-coded PSS-10 items (indices within the 10 items)
+pss_reverse_idx: [4,5,7,8]
+pss_min: 0
+pss_max: 4
+
+# Dose/adherence columns
+dose_minutes_day: "minutes_per_day"
+dose_days_week: "days_per_week"
+
+# Covariates
+covars: ["age","gender","role","prior_mindfulness"]
+
+# Optional grouping (random intercept), e.g., cohort/site
+group_col: null
+
+# MCID threshold as a fraction of baseline SD (0.5 = half SD)
+mcid_sd: 0.5
+
+# Output root directory
+outdir_root: "outputs"

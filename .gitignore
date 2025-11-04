@@ -1,0 +1,33 @@
+﻿# R
+.Rproj.user/
+.Rhistory
+.Rhistory.*
+.Rapp.history
+.RData
+.Ruserdata
+.Rproj
+.Rprofile
+.Renviron
+
+# renv (keep lockfile, ignore local libs)
+renv/library/
+renv/staging/
+renv/python/
+renv/profiles/
+.Rprofile.renv
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Outputs & cache
+outputs/
+figures/
+*.html
+*.pdf
+*.png
+*.csv~
